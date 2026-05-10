@@ -24,7 +24,7 @@ logic rst_n;
 logic [VECTOR_WIDTH-1:0] thr;
 
 logic [VECTOR_WIDTH-1:0] tot;
-logic [VECTOR_WIDTH-1:0] t_leading_edge;
+logic [63:0] t_leading_edge;
 
 
 // ADC interface
@@ -54,6 +54,7 @@ tot_top #(
 u_tot_top (
   .clk_timestamp (clk_timestamp),
   .rst_n         (rst_n),
+  .thr           (thr),
 
   // ADC data
   .bus_a         (adc_bus_a.in),
@@ -62,9 +63,9 @@ u_tot_top (
   .bus_d         (adc_bus_d.in),
 
   // Outputs
-  .t_leading_edge(t_leading_edge),
-  .thr           (thr),
-  .tot           (tot)
+  .t_leading_edge_out (t_leading_edge),
+  .tot_out            (tot),
+  .data_valid         ()
 );
 
 // Init and start ADC
@@ -77,10 +78,10 @@ end
 // Put test values to ADC
 initial begin
     for (int i = 0; i < 1024; i += 4) begin
-      bfm.bus[0].push(i);
-      bfm.bus[1].push((i+1));
-      bfm.bus[2].push((i+2));
-      bfm.bus[3].push((i+3));
+      bfm.bus[0].push(i);       // Sample 0, 3, 7, ...
+      bfm.bus[1].push((i+1));   // Sample 1, 4, 8, ...
+      bfm.bus[2].push((i+2));   // Sample 2, 5, 9, ...
+      bfm.bus[3].push((i+3));   // Sample 3, 6, 10, ...
     end
 end
 
