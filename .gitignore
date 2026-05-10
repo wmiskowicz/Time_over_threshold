@@ -3,3 +3,8 @@ dvt_build.log
 
 /tot_calculator/**
 
+*.veo
+*.xml
+*.txt
+
+

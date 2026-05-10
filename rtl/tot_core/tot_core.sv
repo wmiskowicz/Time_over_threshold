@@ -16,12 +16,15 @@ module tot_core #(
 typedef logic [SAMPLE_NUM_PER_CYCLE-1:0][11:0] adc_sample_vector_t;
 
 
-
 // ----- Local parameter -----
 
 // ----- Local variables -----
+adc_sample_vector_t adc_24_samples;
+
 
 // ----- Signal assignments -----
+assign adc_24_samples = adc_sample_vector_t'(sample);
+
 
 // ----- Module logic -----
 

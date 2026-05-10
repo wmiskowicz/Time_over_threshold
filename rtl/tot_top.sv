@@ -11,19 +11,24 @@ module tot_top#(
   adc_bus_if.in bus_c,
   adc_bus_if.in bus_d,
 
-  output logic [PORTS_WIDTH-1:0] tot,
-  output logic [PORTS_WIDTH-1:0] t_leading_edge
+  output logic [PORTS_WIDTH-1:0] tot_out,
+  output logic [63:0]            t_leading_edge_out,
+  output logic                   data_valid
 );
 
 // ----- Local parameters -----
 localparam SAMPLES_PER_CLK = 24;
 
 // ----- Local variables -----
+wire clk_data; // 800MHz / 3 ~= 266.6MHz
+wire [SAMPLES_PER_CLK*12-1:0] samples;
+
+wire data_valid_in;
+wire [PORTS_WIDTH-1:0] tot_in;
+wire [PORTS_WIDTH-1:0] t_leading_edge_in;
 
 // ----- Module logic -----
 
-wire clk_data;
-wire [SAMPLES_PER_CLK*12-1:0] samples;
 
 serdes_rx u_serdes_rx (
   .bus_a   (bus_a),
@@ -46,9 +51,27 @@ u_tot_core (
   .thr            (thr),
 
 
-  .data_valid     (data_valid),
-  .t_leading_edge (t_leading_edge),
-  .tot            (tot)
+  .data_valid     (data_valid_in),
+  .t_leading_edge (t_leading_edge_in),
+  .tot            (tot_in)
+);
+
+
+output_sum #(
+  .PORTS_WIDTH(PORTS_WIDTH)
+)
+u_output_sum (
+  .clk_data          (clk_data), //266.6MHz
+  .clk_timestamp     (clk_timestamp), //40MHz
+  .rst_n             (rst_n),
+
+  .t_leading_edge_in (t_leading_edge_in),
+  .tot_in            (tot_in),
+  .data_valid_in     (data_valid_in),
+
+  .t_leading_edge_out(t_leading_edge_out),
+  .tot_out           (tot_out),
+  .data_valid_out    (data_valid)
 );
 
 
