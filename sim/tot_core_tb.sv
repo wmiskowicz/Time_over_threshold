@@ -1,108 +1,337 @@
 `timescale 1ns / 1ps
 
-module tot_core_tb();
+module tot_core_tb;
 
-parameter WIDTH = 16;
-parameter CLK_PERIOD = 10; // 100MHz
+// ============================================================
+// Parameters
+// ============================================================
 
-// Signals
+parameter SAMPLE_NUM_PER_CYCLE = 1;
+parameter WIDTH                = 32;
+parameter FRAC                 = 8;
+
+parameter CLK_PERIOD = 10; // 100 MHz
+
+// ============================================================
+// DUT Signals
+// ============================================================
+
 logic clk;
 logic rst_n;
-logic start;
-logic busy;
+
 logic [WIDTH-1:0] thr;
-logic [WIDTH-1:0] sample;
+
+logic [SAMPLE_NUM_PER_CYCLE*12-1:0] sample;
+
+// Outputs
 
 wire [WIDTH-1:0] tot;
+
 wire [WIDTH-1:0] t_leading_edge;
-wire [WIDTH-1:0] t_trailing_edge;
+
+wire [WIDTH-1:0] t_falling_edge;
+
+wire [WIDTH-1:0] tot_fall;
+
 wire data_valid;
 
-// Instantiate UUT (Unit Under Test)
-tot_core #(WIDTH) dut (.*);
+// ============================================================
+// DUT
+// ============================================================
 
-// Clock Generation
-initial begin
+tot_core #(
+  .SAMPLE_NUM_PER_CYCLE(SAMPLE_NUM_PER_CYCLE),
+  .WIDTH(WIDTH),
+  .FRAC(FRAC)
+)
+dut
+(
+  .clk(clk),
+  .rst_n(rst_n),
+
+  .thr(thr),
+
+  .sample(sample),
+
+  .tot(tot),
+
+  .t_leading_edge(t_leading_edge),
+
+  .t_falling_edge(t_falling_edge),
+
+  .tot_fall(tot_fall),
+
+  .data_valid(data_valid)
+);
+
+// ============================================================
+// Clock generation
+// ============================================================
+
+initial
+begin
   clk = 0;
-  forever #(CLK_PERIOD/2) clk = ~clk;
+
+  forever #(CLK_PERIOD/2)
+    clk = ~clk;
 end
 
+// ============================================================
+// Wave dump
+// ============================================================
 
-// Main Stimulus
-initial begin
-  // Initialize
-  rst_n = 0;
-  start = 0;
-  thr = 500;   // Set a threshold
-  sample = 0;
+initial
+begin
 
-  wait_clk_cycles(5);
-  rst_n = 1;
-  wait_clk_cycles(5);
+  //------------------------------------------------------------
+  // GTKWave
+  //------------------------------------------------------------
 
-  // Start processing
+  $dumpfile("tot_core_tb.vcd");
 
-  // Pulse 1: Strong pulse (well above threshold)
-  start <= 1;
-  wait_clk_cycles(100);
-  start <= 0;
-  $display("Emitting edge 2000:  %tns", $time());
-  drive_pulse(2000, 40);
+  $dumpvars(0, tot_core_tb);
 
-  // Pulse 2: Weak pulse (barely above threshold)
-  start <= 1;
-  wait_clk_cycles(10);
-  start <= 0;
-  $display("Emitting edge 600:  %tns", $time());
-  drive_pulse(600, 15);
-
-  // Pulse 3: Under threshold (should not trigger)
-  start <= 1;
-  $display("Emitting edge 1000:  %tns", $time());
-  wait_clk_cycles(1000);
-  start <= 0;
-  drive_pulse(400, 10);
-
-  #100;
-  $display("Simulation Finished");
-  $finish;
 end
 
-// Monitor outputs
-always @(posedge data_valid) begin
-  $display("--- Event Detected at %tns---", $time());
-  $display("Leading Edge:  %0d", t_leading_edge);
-  $display("Trailing Edge: %0d", t_trailing_edge);
-  $display("ToT:           %0d cycles", tot);
-end
+// ============================================================
+// Monitor all signals
+// ============================================================
 
+initial
+begin
 
-// Task to generate a pulse based on the image (Fast rise, slow decay)
-task automatic drive_pulse(input int peak_amplitude, input int duration_cycles);
-  int val;
-  $display("Driving pulse with peak %0d", peak_amplitude);
+  $display("========================================================");
+  $display("Time      clk rst sample thr  valid lead fall tot");
+  $display("========================================================");
 
-  // 1. Sharp Rise (1-2 clock cycles)
-  sample <= peak_amplitude / 2;
-  @(posedge clk);
-  sample <= peak_amplitude;
-  @(posedge clk);
+  forever
+  begin
 
-  // 2. Exponential Decay (Simulating the tail in the image)
-  // Using a simple multiplier to mimic RC decay
-  val = peak_amplitude;
-  repeat(duration_cycles) begin
-    val = (val * 90) / 100; // 10% decay per cycle
-    sample <= val;
     @(posedge clk);
+
+    $display(
+      "%0t   %0b   %0b   %0d   %0d   %0b   %0d   %0d   %0d",
+      $time,
+      clk,
+      rst_n,
+      sample,
+      thr,
+      data_valid,
+      t_leading_edge,
+      t_falling_edge,
+      tot
+    );
+
   end
 
-  sample <= 0;
-  repeat(10) @(posedge clk);
+end
+
+// ============================================================
+// Event detector print
+// ============================================================
+
+always @(posedge data_valid)
+begin
+
+  $display("");
+  $display("================================================");
+  $display("EVENT DETECTED @ %0t ns", $time);
+  $display("================================================");
+
+  $display("Threshold         : %0d", thr);
+
+  $display("Leading Edge      : %0d", t_leading_edge);
+
+  $display("Falling Edge      : %0d", t_falling_edge);
+
+  $display("ToT               : %0d", tot);
+
+  $display("ToT Fall          : %0d", tot_fall);
+
+  $display("================================================");
+  $display("");
+
+end
+
+// ============================================================
+// Main stimulus
+// ============================================================
+
+initial
+begin
+
+  //------------------------------------------------------------
+  // Init
+  //------------------------------------------------------------
+
+  rst_n  = 0;
+
+  thr    = 32'd500;
+
+  sample = '0;
+
+  //------------------------------------------------------------
+  // Reset
+  //------------------------------------------------------------
+
+  wait_clk_cycles(10);
+
+  rst_n = 1;
+
+  wait_clk_cycles(10);
+
+  //------------------------------------------------------------
+  // Pulse 1
+  //------------------------------------------------------------
+
+  $display("");
+  $display("Generating STRONG pulse");
+  $display("");
+
+  drive_pulse(
+    2000,
+    40
+  );
+
+  wait_clk_cycles(50);
+
+  //------------------------------------------------------------
+  // Pulse 2
+  //------------------------------------------------------------
+
+  $display("");
+  $display("Generating MEDIUM pulse");
+  $display("");
+
+  drive_pulse(
+    1200,
+    25
+  );
+
+  wait_clk_cycles(50);
+
+  //------------------------------------------------------------
+  // Pulse 3
+  //------------------------------------------------------------
+
+  $display("");
+  $display("Generating WEAK pulse");
+  $display("");
+
+  drive_pulse(
+    700,
+    15
+  );
+
+  wait_clk_cycles(50);
+
+  //------------------------------------------------------------
+  // Pulse below threshold
+  //------------------------------------------------------------
+
+  $display("");
+  $display("Generating BELOW-THRESHOLD pulse");
+  $display("");
+
+  drive_pulse(
+    300,
+    20
+  );
+
+  //------------------------------------------------------------
+  // Finish
+  //------------------------------------------------------------
+
+  wait_clk_cycles(100);
+
+  $display("");
+  $display("Simulation Finished");
+  $display("");
+
+  $finish;
+
+end
+
+// ============================================================
+// PMT-like pulse generator
+//
+// Fast rise
+// Exponential decay
+// ============================================================
+
+task automatic drive_pulse
+(
+  input int peak_amplitude,
+  input int duration_cycles
+);
+
+  int val;
+
+  begin
+
+    //----------------------------------------------------------
+    // Fast rise
+    //----------------------------------------------------------
+
+    sample <= peak_amplitude / 4;
+    @(posedge clk);
+
+    sample <= peak_amplitude / 2;
+    @(posedge clk);
+
+    sample <= peak_amplitude;
+    @(posedge clk);
+
+    //----------------------------------------------------------
+    // Exponential decay
+    //----------------------------------------------------------
+
+    val = peak_amplitude;
+
+    repeat(duration_cycles)
+    begin
+
+      //--------------------------------------------------------
+      // Approximate RC exponential decay
+      //--------------------------------------------------------
+
+      val = (val * 92) / 100;
+
+      sample <= val[11:0];
+
+      @(posedge clk);
+
+    end
+
+    //----------------------------------------------------------
+    // Return to baseline
+    //----------------------------------------------------------
+
+    sample <= 0;
+
+    repeat(10)
+      @(posedge clk);
+
+  end
+
 endtask
 
+// ============================================================
+// Wait N clocks
+// ============================================================
 
-task automatic wait_clk_cycles(input int clk_num);
-  repeat(clk_num) @(posedge clk);
+task automatic wait_clk_cycles
+(
+  input int clk_num
+);
+
+  begin
+
+    repeat(clk_num)
+      @(posedge clk);
+
+  end
+
 endtask
+
 endmodule
