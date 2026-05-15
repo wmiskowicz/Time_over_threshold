@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 
-module tot_core_tb;
+module tot_core_top_tb;
 
 // ============================================================
 // Parameters
@@ -26,7 +26,7 @@ logic [WIDTH-1:0] thr;
 
 logic [SAMPLE_NUM_PER_CYCLE*12-1:0] sample;
 
-// DUT outputs
+// Outputs
 
 wire [WIDTH-1:0] tot;
 
@@ -74,15 +74,15 @@ begin
 end
 
 // ============================================================
-// Wave dump
+// Dump
 // ============================================================
 
 initial
 begin
 
-  $dumpfile("tot_core_tb.vcd");
+  $dumpfile("tot_core_top_tb.vcd");
 
-  $dumpvars(0, tot_core_tb);
+  $dumpvars(0, tot_core_top_tb);
 
 end
 
@@ -94,9 +94,9 @@ initial
 begin
 
   $display("");
-  $display("==============================================================");
+  $display("==========================================================");
   $display("TIME   SAMPLE   THR   VALID   T_LEAD   TOT");
-  $display("==============================================================");
+  $display("==========================================================");
 
   forever
   begin
@@ -118,7 +118,7 @@ begin
 end
 
 // ============================================================
-// Event print
+// Event display
 // ============================================================
 
 always @(posedge data_valid)
@@ -149,9 +149,9 @@ begin
   // Init
   //------------------------------------------------------------
 
-  rst_n  = 1'b0;
+  rst_n = 1'b0;
 
-  thr    = 32'd500;
+  thr = 32'd500;
 
   sample = '0;
 
@@ -211,7 +211,7 @@ begin
   wait_clk_cycles(50);
 
   //------------------------------------------------------------
-  // Below threshold pulse
+  // Below threshold
   //------------------------------------------------------------
 
   $display("");
@@ -230,7 +230,7 @@ begin
   wait_clk_cycles(100);
 
   $display("");
-  $display("Simulation Finished");
+  $display("Simulation finished");
   $display("");
 
   $finish;
@@ -238,10 +238,7 @@ begin
 end
 
 // ============================================================
-// PMT-like pulse generator
-//
-// Fast rise
-// Exponential decay
+// Pulse generator
 // ============================================================
 
 task automatic drive_pulse
@@ -293,7 +290,7 @@ task automatic drive_pulse
     end
 
     //----------------------------------------------------------
-    // Return to baseline
+    // Return to zero
     //----------------------------------------------------------
 
     sample[11:0] <= 0;
@@ -306,7 +303,7 @@ task automatic drive_pulse
 endtask
 
 // ============================================================
-// Wait N clocks
+// Wait clocks
 // ============================================================
 
 task automatic wait_clk_cycles
