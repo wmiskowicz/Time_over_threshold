@@ -10,3 +10,4 @@ dvt_build.log
 *.tmp*
 *.sim*
 *.cache*
+edit_tot*

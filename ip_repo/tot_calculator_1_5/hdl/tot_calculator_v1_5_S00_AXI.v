@@ -7,12 +7,14 @@ module tot_calculator_v1_5_S00_AXI #
 	parameter SAMPLE_NUM_PER_CYCLE = 1,
 	parameter WIDTH = 32,
 	parameter FRAC = 8,
+	parameter ID = 32'h0000_CA7C,
 
 	parameter integer C_S_AXI_DATA_WIDTH  = 32,
 	parameter integer C_S_AXI_ADDR_WIDTH  = 4
 )
 (
 	input wire [SAMPLE_NUM_PER_CYCLE*12-1:0] sample,
+	wire sample_valid,
 	output wire sample_ready,
 	// Do not modify the ports beyond this line
 
@@ -203,7 +205,7 @@ always @( posedge S_AXI_ACLK ) begin
 		slv_reg0 <= 0;
 		// slv_reg1 <= 0;
 		// slv_reg2 <= 0;
-		slv_reg3 <= 0;
+		slv_reg3 <= ID;
 	end
 	else begin
 		if (slv_reg_wren) begin
@@ -234,13 +236,13 @@ always @( posedge S_AXI_ACLK ) begin
 						if ( S_AXI_WSTRB[byte_index] == 1 ) begin
 							// Respective byte enables are asserted as per write strobes
 							// Slave register 3
-							slv_reg3[(byte_index*8) +: 8] <= S_AXI_WDATA[(byte_index*8) +: 8];
+							// slv_reg3[(byte_index*8) +: 8] <= S_AXI_WDATA[(byte_index*8) +: 8];
 						end
 				default : begin
 					slv_reg0 <= slv_reg0;
 					// slv_reg1 <= slv_reg1;
 					// slv_reg2 <= slv_reg2;
-					slv_reg3 <= slv_reg3;
+					slv_reg3 <= ID;
 				end
 			endcase
 		end
@@ -363,6 +365,7 @@ end
 // Register 0 - R/W - Threshold
 // Register 1 - R   - Time over threshold
 // Register 2 - R   - Time of leading edge
+// Register 3 - R   - ID register
 
 wire [WIDTH-1:0] tot;
 wire [WIDTH-1:0] t_leading_edge;
@@ -382,6 +385,7 @@ u_tot_core_top (
 
 
 	.thr           (thr_in),
+	// .sample        (sample_valid ? sample : WIDTH'(0)),
 	.sample        (sample),
 
 	.data_valid    (data_valid),

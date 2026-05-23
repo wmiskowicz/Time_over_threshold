@@ -1,0 +1,176 @@
+module bram_controller (
+  input  logic         clk,
+  input  logic         rst,
+
+  // Control inputs
+  input  logic         start,
+  input  logic [31:0]  addr_start,
+  input  logic [31:0]  addr_stop,
+
+  // BRAM Physical Interface
+  output logic [31:0]  bram_addr,
+  output logic         bram_arvalid,
+  input  logic [31:0]  bram_rdata,
+  input  wire          bram_rvalid,
+
+  // Downstream Stream Interface (288-bit Packets)
+  output logic [287:0] samples,
+  output logic         samples_valid,
+  input  logic         samples_ready
+);
+
+// FSM States
+typedef enum logic [1:0] {
+  IDLE        = 2'b00,
+  ACQUIRE     = 2'b01, // Read all data from BRAM into FIFO
+  STREAM      = 2'b10  // Burst stream to downstream until empty
+} state_t;
+
+state_t state;
+
+// Internal Address & Pipeline Signals
+logic [31:0] current_addr;
+
+// Packing Shift Register Signals
+logic [4:0]  pack_count;
+logic [23:0][11:0] pack_reg;
+
+// FIFO Signals (Using a 288-bit wide internal FIFO)
+logic         fifo_wr_en;
+logic [287:0] fifo_din;
+logic         fifo_rd_en;
+logic [287:0] fifo_dout;
+logic         fifo_empty;
+logic         fifo_full;
+
+// Extract the two 12-bit samples from BRAM
+logic [11:0] sample_a, sample_b;
+assign sample_a = bram_rdata[11:0];
+assign sample_b = bram_rdata[23:12];
+
+// Connect FIFO output directly to output stream port
+assign samples = fifo_dout;
+
+// -------------------------------------------------------------------------
+// 1. Core FSM & BRAM Acquisition Logic
+// -------------------------------------------------------------------------
+always_ff @(posedge clk or posedge rst) begin
+  if (rst) begin
+    state        <= IDLE;
+    current_addr <= 32'd0;
+    bram_arvalid      <= 1'b0;
+    bram_addr    <= 32'd0;
+  end else begin
+    case (state)
+      IDLE: begin
+        bram_arvalid <= 1'b0;
+        if (start) begin
+          current_addr <= addr_start;
+          state        <= ACQUIRE;
+        end
+      end
+
+      ACQUIRE: begin
+        if (current_addr > addr_stop) begin
+          bram_arvalid <= 1'b0;
+          // Wait for the final pipelined BRAM reads to settle into the pack_reg
+          if (pack_count == 5'd0 && !bram_rvalid) begin
+            state <= STREAM;
+          end
+        end else if (!fifo_full) begin
+          bram_arvalid      <= 1'b1;
+          bram_addr    <= current_addr;
+          current_addr <= current_addr + 32'd4;
+        end else begin
+          bram_arvalid <= 1'b0; // Halt if FIFO fills up
+        end
+      end
+
+      STREAM: begin
+        bram_arvalid <= 1'b0;
+        if (fifo_empty) begin
+          state <= IDLE;
+        end
+      end
+
+      default: state <= IDLE;
+    endcase
+  end
+end
+
+// -------------------------------------------------------------------------
+// 2. Sample Packing & Accumulation (2 Samples -> 24 Samples)
+// -------------------------------------------------------------------------
+always_ff @(posedge clk or posedge rst) begin
+  if (rst) begin
+    pack_count       <= 5'd0;
+    pack_reg         <= '0;
+    fifo_wr_en       <= 1'b0;
+    fifo_din         <= '0;
+  end else begin
+    fifo_wr_en       <= 1'b0; // Default pulse
+
+    if (bram_rvalid) begin
+      pack_reg[pack_count]   <= sample_a;
+      pack_reg[pack_count+1] <= sample_b;
+
+      if (pack_count >= 5'd22) begin
+        // Buffer full (24 samples collected). Push to FIFO.
+        fifo_din   <= {bram_rdata[23:12], bram_rdata[11:0], pack_reg[21:0]};
+        fifo_wr_en <= 1'b1;
+        pack_count <= 5'd0;
+      end else begin
+        pack_count <= pack_count + 5'd2;
+      end
+    end
+  end
+end
+
+// -------------------------------------------------------------------------
+// 3. Streaming Output Handshake Control
+// -------------------------------------------------------------------------
+// During STREAM state, valid is driven by whether data exists in the FIFO.
+assign samples_valid = (state == STREAM) && !fifo_empty;
+
+// Read from the FIFO whenever downstream says ready and data is available
+assign fifo_rd_en = samples_valid && samples_ready;
+
+// -------------------------------------------------------------------------
+// 4. Basic Internal Synchronous FIFO Model (Depth: 16 Packets)
+// -------------------------------------------------------------------------
+// For standalone portability. In Vivado, this can be swapped out for a
+// Native FIFO Generator IP core block.
+logic [287:0] fifo_mem[0:15];
+logic [3:0]   wr_ptr = 0;
+logic [3:0]   rd_ptr = 0;
+logic [4:0]   fifo_count = 0;
+
+assign fifo_empty = (fifo_count == 0);
+assign fifo_full  = (fifo_count == 16);
+
+always_ff @(posedge clk) begin
+  if (rst) begin
+    wr_ptr     <= 0;
+    rd_ptr     <= 0;
+    fifo_count <= 0;
+  end else begin
+    if (fifo_wr_en && !fifo_full) begin
+      fifo_mem[wr_ptr] <= fifo_din;
+      wr_ptr           <= wr_ptr + 1;
+    end
+    if (fifo_rd_en && !fifo_empty) begin
+      rd_ptr <= rd_ptr + 1;
+    end
+
+    // Track FIFO element occupancy count
+    case ({fifo_wr_en && !fifo_full, fifo_rd_en && !fifo_empty})
+      2'b10: fifo_count <= fifo_count + 1;
+      2'b01: fifo_count <= fifo_count - 1;
+      default: ;
+    endcase
+  end
+end
+
+assign fifo_dout = fifo_mem[rd_ptr];
+
+endmodule

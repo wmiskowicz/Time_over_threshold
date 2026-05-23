@@ -14,6 +14,7 @@
 // Register 0 - R/W - Threshold
 // Register 1 - R   - Time over threshold
 // Register 2 - R   - Time of leading edge
+// Register 3 - R   - ID register
 
 `timescale 1 ns / 1 ps
 
@@ -21,9 +22,10 @@
 module tot_calculator_v1_5 #
 (
 	// ToT calculator parameters
-	parameter SAMPLE_NUM_PER_CYCLE = 1,
+	parameter SAMPLE_NUM_PER_CYCLE = 24,
 	parameter WIDTH = 32,
 	parameter FRAC = 8,
+	parameter ID = 32'h0000_CA7C,
 
 	// Parameters of Axi Slave Bus Interface S00_AXI
 	parameter integer C_S00_AXI_DATA_WIDTH  = 32,
@@ -32,6 +34,7 @@ module tot_calculator_v1_5 #
 (
 	// ToT calculator ports
 	input wire [SAMPLE_NUM_PER_CYCLE*12-1:0] sample,
+	input wire sample_valid,
 	output wire sample_ready,
 
 	// Ports of Axi Slave Bus Interface S00_AXI
@@ -62,6 +65,7 @@ tot_calculator_v1_5_S00_AXI # (
 	.SAMPLE_NUM_PER_CYCLE(SAMPLE_NUM_PER_CYCLE),
 	.WIDTH(WIDTH),
 	.FRAC(FRAC),
+	.ID(ID),
 	.C_S_AXI_DATA_WIDTH(C_S00_AXI_DATA_WIDTH),
 	.C_S_AXI_ADDR_WIDTH(C_S00_AXI_ADDR_WIDTH)
 ) tot_calculator_v1_5_S00_AXI_inst (

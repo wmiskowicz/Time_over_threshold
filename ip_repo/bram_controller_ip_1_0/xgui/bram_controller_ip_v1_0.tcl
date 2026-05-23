@@ -11,42 +11,6 @@ proc init_gui { IPINST } {
 
 }
 
-proc update_PARAM_VALUE.FRAC { PARAM_VALUE.FRAC } {
-	# Procedure called to update FRAC when any of the dependent parameters in the arguments change
-}
-
-proc validate_PARAM_VALUE.FRAC { PARAM_VALUE.FRAC } {
-	# Procedure called to validate FRAC
-	return true
-}
-
-proc update_PARAM_VALUE.ID { PARAM_VALUE.ID } {
-	# Procedure called to update ID when any of the dependent parameters in the arguments change
-}
-
-proc validate_PARAM_VALUE.ID { PARAM_VALUE.ID } {
-	# Procedure called to validate ID
-	return true
-}
-
-proc update_PARAM_VALUE.SAMPLE_NUM_PER_CYCLE { PARAM_VALUE.SAMPLE_NUM_PER_CYCLE } {
-	# Procedure called to update SAMPLE_NUM_PER_CYCLE when any of the dependent parameters in the arguments change
-}
-
-proc validate_PARAM_VALUE.SAMPLE_NUM_PER_CYCLE { PARAM_VALUE.SAMPLE_NUM_PER_CYCLE } {
-	# Procedure called to validate SAMPLE_NUM_PER_CYCLE
-	return true
-}
-
-proc update_PARAM_VALUE.WIDTH { PARAM_VALUE.WIDTH } {
-	# Procedure called to update WIDTH when any of the dependent parameters in the arguments change
-}
-
-proc validate_PARAM_VALUE.WIDTH { PARAM_VALUE.WIDTH } {
-	# Procedure called to validate WIDTH
-	return true
-}
-
 proc update_PARAM_VALUE.C_S00_AXI_DATA_WIDTH { PARAM_VALUE.C_S00_AXI_DATA_WIDTH } {
 	# Procedure called to update C_S00_AXI_DATA_WIDTH when any of the dependent parameters in the arguments change
 }
@@ -92,25 +56,5 @@ proc update_MODELPARAM_VALUE.C_S00_AXI_DATA_WIDTH { MODELPARAM_VALUE.C_S00_AXI_D
 proc update_MODELPARAM_VALUE.C_S00_AXI_ADDR_WIDTH { MODELPARAM_VALUE.C_S00_AXI_ADDR_WIDTH PARAM_VALUE.C_S00_AXI_ADDR_WIDTH } {
 	# Procedure called to set VHDL generic/Verilog parameter value(s) based on TCL parameter value
 	set_property value [get_property value ${PARAM_VALUE.C_S00_AXI_ADDR_WIDTH}] ${MODELPARAM_VALUE.C_S00_AXI_ADDR_WIDTH}
-}
-
-proc update_MODELPARAM_VALUE.SAMPLE_NUM_PER_CYCLE { MODELPARAM_VALUE.SAMPLE_NUM_PER_CYCLE PARAM_VALUE.SAMPLE_NUM_PER_CYCLE } {
-	# Procedure called to set VHDL generic/Verilog parameter value(s) based on TCL parameter value
-	set_property value [get_property value ${PARAM_VALUE.SAMPLE_NUM_PER_CYCLE}] ${MODELPARAM_VALUE.SAMPLE_NUM_PER_CYCLE}
-}
-
-proc update_MODELPARAM_VALUE.WIDTH { MODELPARAM_VALUE.WIDTH PARAM_VALUE.WIDTH } {
-	# Procedure called to set VHDL generic/Verilog parameter value(s) based on TCL parameter value
-	set_property value [get_property value ${PARAM_VALUE.WIDTH}] ${MODELPARAM_VALUE.WIDTH}
-}
-
-proc update_MODELPARAM_VALUE.FRAC { MODELPARAM_VALUE.FRAC PARAM_VALUE.FRAC } {
-	# Procedure called to set VHDL generic/Verilog parameter value(s) based on TCL parameter value
-	set_property value [get_property value ${PARAM_VALUE.FRAC}] ${MODELPARAM_VALUE.FRAC}
-}
-
-proc update_MODELPARAM_VALUE.ID { MODELPARAM_VALUE.ID PARAM_VALUE.ID } {
-	# Procedure called to set VHDL generic/Verilog parameter value(s) based on TCL parameter value
-	set_property value [get_property value ${PARAM_VALUE.ID}] ${MODELPARAM_VALUE.ID}
 }
 
