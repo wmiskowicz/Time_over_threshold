@@ -1,7 +1,7 @@
 .dvt
 dvt_build.log
 
-/tot_calculator/**
+/results
 
 *.veo
 *.txt
@@ -11,3 +11,6 @@ dvt_build.log
 *.sim*
 *.cache*
 edit_tot*
+
+tot_calculator_bram/tot_calculator_bram.hw/
+tot_calculator_bram/tot_calculator_bram.ip_user_files/

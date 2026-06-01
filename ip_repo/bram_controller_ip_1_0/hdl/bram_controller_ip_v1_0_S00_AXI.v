@@ -3,9 +3,7 @@
 
 	module bram_controller_ip_v1_0_S00_AXI #
 	(
-		// Users to add parameters here
-
-		// User parameters ends
+		parameter ID = 32'h0000_B8A9,
 		// Do not modify the parameters beyond this line
 
 		// Width of S_AXI data bus
@@ -232,7 +230,7 @@
 	      slv_reg0 <= 0;
 	      slv_reg1 <= 0;
 	      slv_reg2 <= 0;
-	      slv_reg3 <= 0;
+	      slv_reg3 <= ID;
 	    end 
 	  else begin
 	    if (slv_reg_wren)
@@ -264,13 +262,13 @@
 	              if ( S_AXI_WSTRB[byte_index] == 1 ) begin
 	                // Respective byte enables are asserted as per write strobes 
 	                // Slave register 3
-	                slv_reg3[(byte_index*8) +: 8] <= S_AXI_WDATA[(byte_index*8) +: 8];
+	                // slv_reg3[(byte_index*8) +: 8] <= S_AXI_WDATA[(byte_index*8) +: 8];
 	              end  
 	          default : begin
 	                      slv_reg0 <= slv_reg0;
 	                      slv_reg1 <= slv_reg1;
 	                      slv_reg2 <= slv_reg2;
-	                      slv_reg3 <= slv_reg3;
+	                      slv_reg3 <= ID;
 	                    end
 	        endcase
 	      end

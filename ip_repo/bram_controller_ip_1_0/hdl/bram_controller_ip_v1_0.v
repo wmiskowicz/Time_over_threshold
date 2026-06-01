@@ -1,3 +1,19 @@
+// ---------------------------------------
+// ------- BRAM Controller AXI IP ---------
+// ---------------------------------------
+
+// The goal of this IP is to simulate a real-life conditions of ADC12DL3200 SerDes.
+// The IP is responsible for reading BRAM data under adresses provided
+// in registers 1 and 2. Then in packs the data into 287-bit vectors and streams it
+// after Register_0[0] is being set.
+
+// Register 0 - R/W - Control register
+	// Bit 0 - R/W - Start
+// Register 1 - R   - Address start
+// Register 2 - R   - Address stop
+// Register 3 - R   - ID register
+
+
 
 `timescale 1 ns / 1 ps
 
