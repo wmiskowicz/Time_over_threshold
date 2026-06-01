@@ -22,56 +22,39 @@ module tot_final_accumulator #(
 
 logic [WIDTH-1:0] rise_timestamp;
 logic [WIDTH-1:0] fall_timestamp;
+logic fall_valid_q;
 
-always_ff @(posedge clk or negedge rst_n)
-begin
-
-  if (!rst_n)
-  begin
-
+always_ff @(posedge clk or negedge rst_n) begin
+  if (!rst_n) begin
     tot <= '0;
-
     t_leading_edge <= '0;
-
     data_valid <= 1'b0;
+    fall_valid_q <= 1'b0;
 
+    rise_timestamp <= '0;
+    fall_timestamp <= '0;
   end
-  else
-  begin
+  else begin
+    fall_valid_q <= fall_valid;
 
     data_valid <= 1'b0;
 
-    if (rise_valid)
-    begin
-
-      rise_timestamp <=
-        (rise_coarse_time << FRAC)
-        |
-        rise_frac;
-
+    if (rise_valid) begin
+      rise_timestamp <= (rise_coarse_time << FRAC) | rise_frac;
     end
 
-    if (fall_valid)
-    begin
+    if (fall_valid) begin
+      fall_timestamp <= (fall_coarse_time << FRAC) | fall_frac;
+    end
 
-      fall_timestamp <=
-        (fall_coarse_time << FRAC)
-        |
-        fall_frac;
-
-      tot <=
-        fall_timestamp
-        -
-        rise_timestamp;
-
+    if (fall_valid_q) begin
+      tot <= fall_timestamp - rise_timestamp;
       t_leading_edge <= rise_timestamp;
-
       data_valid <= 1'b1;
-
     end
+    
 
   end
-
 end
 
 endmodule

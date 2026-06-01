@@ -2,7 +2,7 @@
 -- Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2023.1 (win64) Build 3865809 Sun May  7 15:05:29 MDT 2023
--- Date        : Sat May 23 19:58:50 2026
+-- Date        : Tue Jun  2 01:03:46 2026
 -- Host        : DARIUSZ running 64-bit major release  (build 9200)
 -- Command     : write_vhdl -force -mode synth_stub
 --               c:/AGH_archive/Semestr_MI/SDUP/Project/tot_calculator_merge/ip_repo/tot_calculator_1_5/src/fifo_generator_0/fifo_generator_0_stub.vhdl

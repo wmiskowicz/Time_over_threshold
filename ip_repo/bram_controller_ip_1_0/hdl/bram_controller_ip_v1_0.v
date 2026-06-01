@@ -19,31 +19,28 @@
 
 	module bram_controller_ip_v1_0 #
 	(
-		// Users to add parameters here
-
-		// User parameters ends
-		// Do not modify the parameters beyond this line
-
-
-		// Parameters of Axi Slave Bus Interface S00_AXI
 		parameter integer C_S00_AXI_DATA_WIDTH	= 32,
 		parameter integer C_S00_AXI_ADDR_WIDTH	= 4
 	)
 	(
-		// Users to add ports here
+		// ----- BRAM AXI -----
 		output wire [31:0] bram_addr,
 		output wire        bram_arvalid,
 		input  wire        bram_arready,
+    output wire [7:0]  bram_arlen,
+    output wire [2:0]  bram_arsize,
+    output wire [1:0]  bram_arburst,
 
 		input  wire [31:0] bram_rdata,
 		input  wire        bram_rvalid,
 		output wire        bram_rready,
+		input  wire        bram_rlast,
+    input  wire [1:0]  bram_rresp,
 		
-		// 2. Downstream Streaming Packet Ports 
+		// ----- Sample stream -----
 		output wire [287:0] samples,
 		output wire         samples_valid,
 		input  wire         samples_ready,
-		// User ports ends
 
 		// Ports of Axi Slave Bus Interface S00_AXI
 		input wire  s00_axi_aclk,
@@ -106,8 +103,8 @@
 		.S_AXI_RREADY(s00_axi_rready)
 	);
 
-	// Add user logic here
-
-	// User logic ends
+	assign bram_arlen   = 8'b0000_0000;	// 1 data transfer per address request
+	assign bram_arsize  = 3'd4;         // 4 bytes (32-bit) per transfer
+	assign bram_arburst = 2'h1;					// Incrementing address mode
 
 	endmodule

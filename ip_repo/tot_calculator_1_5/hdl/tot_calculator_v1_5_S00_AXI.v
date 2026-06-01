@@ -106,7 +106,7 @@ localparam integer OPT_MEM_ADDR_BITS = 1;
 reg [C_S_AXI_DATA_WIDTH-1:0]  slv_reg0;
 wire [C_S_AXI_DATA_WIDTH-1:0] slv_reg1;
 wire [C_S_AXI_DATA_WIDTH-1:0] slv_reg2;
-reg [C_S_AXI_DATA_WIDTH-1:0]  slv_reg3;
+wire [C_S_AXI_DATA_WIDTH-1:0]  slv_reg3;
 wire   slv_reg_rden;
 wire   slv_reg_wren;
 reg [C_S_AXI_DATA_WIDTH-1:0]   reg_data_out;
@@ -205,7 +205,7 @@ always @( posedge S_AXI_ACLK ) begin
 		slv_reg0 <= 0;
 		// slv_reg1 <= 0;
 		// slv_reg2 <= 0;
-		slv_reg3 <= ID;
+		// slv_reg3 <= ID;
 	end
 	else begin
 		if (slv_reg_wren) begin
@@ -242,7 +242,7 @@ always @( posedge S_AXI_ACLK ) begin
 					slv_reg0 <= slv_reg0;
 					// slv_reg1 <= slv_reg1;
 					// slv_reg2 <= slv_reg2;
-					slv_reg3 <= ID;
+					// slv_reg3 <= ID;
 				end
 			endcase
 		end
@@ -396,29 +396,49 @@ u_tot_core_top (
 
 // ----- FIFO -----
 wire wr_en;
-wire rd_en1, rd_en2;
+wire rd_en1, rd_en2, rd_en3;
+wire [1:0] scaled_addr;
 wire [WIDTH-1:0] tot_reg;
-wire [WIDTH-1:0] t_leading_reg;
-wire full1, full2;
-wire empty1, empty2;
+wire [WIDTH-1:0] t_leading_reg_hi;
+wire [WIDTH-1:0] t_leading_reg_low;
+wire full1, full2, full3;
+wire empty1, empty2, empty3;
 
+assign scaled_addr = axi_araddr[ADDR_LSB+OPT_MEM_ADDR_BITS:ADDR_LSB];
 assign wr_en = data_valid && !(full1 || full2);
-assign rd_en1 = slv_reg_rden && (axi_araddr==2'h1) && !empty1;
-assign rd_en2 = slv_reg_rden && (axi_araddr==2'h2) && !empty2;
+assign rd_en1 = slv_reg_rden && (scaled_addr==2'h1) && !empty1;
+assign rd_en2 = slv_reg_rden && (scaled_addr==2'h2) && !empty2;
+assign rd_en3 = slv_reg_rden && (scaled_addr==2'h3) && !empty3;
 
 assign slv_reg1 = tot_reg;
-assign slv_reg2 = t_leading_reg;
-assign sample_ready = !(full1 || full2);
+assign slv_reg2 = t_leading_reg_low;
+assign slv_reg3 = t_leading_reg_hi;
+assign sample_ready = !(full1 || full2 || full3);
 
-fifo_generator_0 fifo_t_leading (
+
+fifo_generator_0 fifo_t_leading_low (
 	.clk        (S_AXI_ACLK),
 	.srst       (!S_AXI_ARESETN),
 
-	.din        (t_leading_edge),
-	.dout       (t_leading_reg),
+	.din        (t_leading_edge[31:0]),
+	.dout       (t_leading_reg_low),
 	.empty      (empty1),
 	.full       (full1),
 	.rd_en      (rd_en1),
+	.rd_rst_busy(),
+	.wr_en      (wr_en),
+	.wr_rst_busy()
+);
+
+fifo_generator_0 fifo_t_leading_hi (
+	.clk        (S_AXI_ACLK),
+	.srst       (!S_AXI_ARESETN),
+
+	.din        (t_leading_edge[63:32]),
+	.dout       (t_leading_reg_hi),
+	.empty      (empty2),
+	.full       (full2),
+	.rd_en      (rd_en2),
 	.rd_rst_busy(),
 	.wr_en      (wr_en),
 	.wr_rst_busy()
@@ -430,9 +450,9 @@ fifo_generator_0 fifo_tot (
 
 	.din        (tot),
 	.dout       (tot_reg),
-	.empty      (empty2),
-	.full       (full2),
-	.rd_en      (rd_en2),
+	.empty      (empty3),
+	.full       (full3),
+	.rd_en      (rd_en3),
 	.rd_rst_busy(),
 	.wr_en      (wr_en),
 	.wr_rst_busy()

@@ -10,7 +10,12 @@ dvt_build.log
 *.tmp*
 *.sim*
 *.cache*
+*.log
+*.csv
 edit_tot*
+
+ip_repo/tot_calculator_1_5/src/*
+ip_repo/bram_controller_ip_1_0/src/*
 
 tot_calculator_bram/tot_calculator_bram.hw/
 tot_calculator_bram/tot_calculator_bram.ip_user_files/

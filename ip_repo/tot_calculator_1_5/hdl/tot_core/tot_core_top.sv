@@ -4,13 +4,14 @@ module tot_core_top #(
   parameter FRAC = 8
 )(
   input wire clk,
+  input wire clk_40MHz,
   input wire rst_n,
 
   input wire [WIDTH-1:0] thr,
   input wire [SAMPLE_NUM_PER_CYCLE*12-1:0] sample,
 
   output logic [WIDTH-1:0] tot,
-  output logic [WIDTH-1:0] t_leading_edge,
+  output logic [63:0] t_leading_edge,
 
   output logic data_valid
 );
@@ -18,6 +19,15 @@ module tot_core_top #(
 // ============================================================
 // Internal signals
 // ============================================================
+
+wire data_valid_in;
+wire data_valid_out;
+
+wire [WIDTH-1:0] tot_in;
+wire [WIDTH-1:0] tot_out;
+
+wire [WIDTH-1:0] t_leading_edge_in;
+wire [63:0] t_leading_edge_out;
 
 // Edge detection
 
@@ -41,6 +51,11 @@ logic [WIDTH-1:0] fall_coarse_time;
 
 logic [FRAC-1:0] rise_frac;
 logic [FRAC-1:0] fall_frac;
+
+
+assign data_valid = data_valid_out;
+assign t_leading_edge = t_leading_edge_out;
+assign tot = tot_out;
 
 // ============================================================
 // Coarse ToT core
@@ -128,11 +143,27 @@ u_tot_final_accumulator
   .rise_frac(rise_frac),
   .fall_frac(fall_frac),
 
-  .tot(tot),
+  .tot(tot_in),
+  .t_leading_edge(t_leading_edge_in),
+  .data_valid(data_valid_in)
+);
 
-  .t_leading_edge(t_leading_edge),
 
-  .data_valid(data_valid)
+
+output_sum #(
+  .PORTS_WIDTH(WIDTH)
+)
+u_output_sum (
+  .clk_data          (clk),
+  .clk_timestamp     (clk_40MHz),
+  .rst_n             (rst_n),
+
+  .data_valid_in     (data_valid_in),
+  .data_valid_out    (data_valid_out),
+  .t_leading_edge_in (t_leading_edge_in),
+  .t_leading_edge_out(t_leading_edge_out), //Picosecond master timestamp
+  .tot_in            (tot_in),
+  .tot_out           (tot_out)
 );
 
 endmodule

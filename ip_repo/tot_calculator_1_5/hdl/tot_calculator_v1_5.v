@@ -13,8 +13,8 @@
 
 // Register 0 - R/W - Threshold
 // Register 1 - R   - Time over threshold
-// Register 2 - R   - Time of leading edge
-// Register 3 - R   - ID register
+// Register 2 - R   - Time of leading edge [31:0]
+// Register 3 - R   - Time of leading edge [63:32]
 
 `timescale 1 ns / 1 ps
 
@@ -29,7 +29,7 @@ module tot_calculator_v1_5 #
 
 	// Parameters of Axi Slave Bus Interface S00_AXI
 	parameter integer C_S00_AXI_DATA_WIDTH  = 32,
-	parameter integer C_S00_AXI_ADDR_WIDTH  = 8
+	parameter integer C_S00_AXI_ADDR_WIDTH  = 6
 )
 (
 	// ToT calculator ports
