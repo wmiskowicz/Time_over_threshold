@@ -46,10 +46,9 @@ logic [287:0] fifo_dout;
 logic         fifo_empty;
 logic         fifo_full;
 
-// Extract the two 12-bit samples from BRAM
-logic [11:0] sample_a, sample_b;
+// Extract the single 12-bit sample from BRAM (Python only writes 1 sample per word)
+logic [11:0] sample_a;
 assign sample_a = bram_rdata[11:0];
-assign sample_b = bram_rdata[23:12];
 
 assign samples = fifo_dout;
 
@@ -65,7 +64,6 @@ always_ff @(posedge clk or posedge rst) begin
     addr_stop_q     <= 32'd0;
   end 
   else begin
-
 
     case (state)
       IDLE: begin
@@ -93,8 +91,6 @@ always_ff @(posedge clk or posedge rst) begin
       end
 
       FLUSH: begin
-        // Force state transition; the packing logic will catch this state 
-        // and instantly push trailing samples out to FIFO
         state <= STREAM;
       end
 
@@ -113,7 +109,7 @@ always_ff @(posedge clk or posedge rst) begin
 end
 
 // -------------------------------------------------------------------------
-// 2. Safe Sample Packing Engine
+// 2. Safe Sample Packing Engine (Adapted for 1 Sample / Word)
 // -------------------------------------------------------------------------
 always_ff @(posedge clk or posedge rst) begin
   if (rst) begin
@@ -125,23 +121,22 @@ always_ff @(posedge clk or posedge rst) begin
     fifo_wr_en <= 1'b0;
 
     if (bram_rvalid && (state == ACQUIRE)) begin
-      pack_reg[pack_count]   <= sample_a;
-      pack_reg[pack_count+1] <= sample_b;
+      pack_reg[pack_count] <= sample_a;
 
-      if (pack_count >= 5'd22) begin
-        // Clean array assignment structure using full explicit indexing
-        fifo_din <= {sample_b, sample_a, pack_reg[21:0]};
+      if (pack_count == 5'd23) begin // Trigger vector push when full (24 samples collected)
+        fifo_din   <= {sample_a, pack_reg[22:0]};
         fifo_wr_en <= 1'b1;
         pack_count <= 5'd0;
       end else begin
-        pack_count <= pack_count + 5'd2;
+        pack_count <= pack_count + 5'd1; // Increment step changed to 1
       end
     end 
     // Handle the final remainder data flushing safely
     else if (state == FLUSH) begin
-      // Zero-fill the unassigned data array sectors, preserve what we collected
-      fifo_din   <= pack_reg; 
-      fifo_wr_en <= 1'b1;
+      if (pack_count != 5'd0) begin // Only write if there are un-flushed elements
+        fifo_din   <= pack_reg; 
+        fifo_wr_en <= 1'b1;
+      end
       pack_count <= 5'd0;
     end
   end

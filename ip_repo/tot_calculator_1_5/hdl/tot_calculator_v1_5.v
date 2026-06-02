@@ -70,6 +70,7 @@ tot_calculator_v1_5_S00_AXI # (
 	.C_S_AXI_ADDR_WIDTH(C_S00_AXI_ADDR_WIDTH)
 ) tot_calculator_v1_5_S00_AXI_inst (
 	.sample        (sample),
+	.sample_valid	 (sample_valid),
 	.sample_ready  (sample_ready),
 	.S_AXI_ACLK(s00_axi_aclk),
 	.S_AXI_ARESETN(s00_axi_aresetn),

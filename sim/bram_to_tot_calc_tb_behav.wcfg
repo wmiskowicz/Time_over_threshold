@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="bram_to_tot_calc_tb_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="axi_master_bfm_pkg" />
+            <top_module name="axi_pkg" />
+            <top_module name="axi_vip_pkg" />
+            <top_module name="bram_to_tot_calc_tb" />
+            <top_module name="glbl" />
+            <top_module name="std" />
+            <top_module name="vcomponents" />
+            <top_module name="xil_common_vip_pkg" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0.000000 us"></ZoomStartTime>
+      <ZoomEndTime time="16.360001 us"></ZoomEndTime>
+      <Cursor1Time time="0.960000 us"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="266"></NameColumnWidth>
+      <ValueColumnWidth column_width="94"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="22" />
+   <wvobject fp_name="/bram_to_tot_calc_tb/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/bram_to_tot_calc_tb/rst" type="logic">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/bram_to_tot_calc_tb/bram_addr" type="array">
+      <obj_property name="ElementShortName">bram_addr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">bram_addr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/bram_to_tot_calc_tb/bram_arvalid" type="logic">
+      <obj_property name="ElementShortName">bram_arvalid</obj_property>
+      <obj_property name="ObjectShortName">bram_arvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/bram_to_tot_calc_tb/bram_rdata" type="array">
+      <obj_property name="ElementShortName">bram_rdata[31:0]</obj_property>
+      <obj_property name="ObjectShortName">bram_rdata[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/bram_to_tot_calc_tb/bram_rvalid" type="logic">
+      <obj_property name="ElementShortName">bram_rvalid</obj_property>
+      <obj_property name="ObjectShortName">bram_rvalid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/bram_to_tot_calc_tb/bram_rready" type="logic">
+      <obj_property name="ElementShortName">bram_rready</obj_property>
+      <obj_property name="ObjectShortName">bram_rready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/bram_to_tot_calc_tb/bram_arready" type="logic">
+      <obj_property name="ElementShortName">bram_arready</obj_property>
+      <obj_property name="ObjectShortName">bram_arready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/bram_to_tot_calc_tb/samples" type="array">
+      <obj_property name="ElementShortName">samples[287:0]</obj_property>
+      <obj_property name="ObjectShortName">samples[287:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/bram_to_tot_calc_tb/samples_valid" type="logic">
+      <obj_property name="ElementShortName">samples_valid</obj_property>
+      <obj_property name="ObjectShortName">samples_valid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/bram_to_tot_calc_tb/samples_ready" type="logic">
+      <obj_property name="ElementShortName">samples_ready</obj_property>
+      <obj_property name="ObjectShortName">samples_ready</obj_property>
+   </wvobject>
+   <wvobject fp_name="group60" type="group">
+      <obj_property name="label">BRAM_AXI</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/bram_to_tot_calc_tb/s00_axi_awaddr" type="array">
+         <obj_property name="ElementShortName">s00_axi_awaddr[5:0]</obj_property>
+         <obj_property name="ObjectShortName">s00_axi_awaddr[5:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/s00_axi_awprot" type="array">
+         <obj_property name="ElementShortName">s00_axi_awprot[2:0]</obj_property>
+         <obj_property name="ObjectShortName">s00_axi_awprot[2:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/s00_axi_awvalid" type="logic">
+         <obj_property name="ElementShortName">s00_axi_awvalid</obj_property>
+         <obj_property name="ObjectShortName">s00_axi_awvalid</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/s00_axi_awready" type="logic">
+         <obj_property name="ElementShortName">s00_axi_awready</obj_property>
+         <obj_property name="ObjectShortName">s00_axi_awready</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/s00_axi_wdata" type="array">
+         <obj_property name="ElementShortName">s00_axi_wdata[31:0]</obj_property>
+         <obj_property name="ObjectShortName">s00_axi_wdata[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/s00_axi_wstrb" type="array">
+         <obj_property name="ElementShortName">s00_axi_wstrb[3:0]</obj_property>
+         <obj_property name="ObjectShortName">s00_axi_wstrb[3:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/s00_axi_wvalid" type="logic">
+         <obj_property name="ElementShortName">s00_axi_wvalid</obj_property>
+         <obj_property name="ObjectShortName">s00_axi_wvalid</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/s00_axi_wready" type="logic">
+         <obj_property name="ElementShortName">s00_axi_wready</obj_property>
+         <obj_property name="ObjectShortName">s00_axi_wready</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/s00_axi_bresp" type="array">
+         <obj_property name="ElementShortName">s00_axi_bresp[1:0]</obj_property>
+         <obj_property name="ObjectShortName">s00_axi_bresp[1:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/s00_axi_bvalid" type="logic">
+         <obj_property name="ElementShortName">s00_axi_bvalid</obj_property>
+         <obj_property name="ObjectShortName">s00_axi_bvalid</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/s00_axi_bready" type="logic">
+         <obj_property name="ElementShortName">s00_axi_bready</obj_property>
+         <obj_property name="ObjectShortName">s00_axi_bready</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/s00_axi_araddr" type="array">
+         <obj_property name="ElementShortName">s00_axi_araddr[5:0]</obj_property>
+         <obj_property name="ObjectShortName">s00_axi_araddr[5:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/s00_axi_arprot" type="array">
+         <obj_property name="ElementShortName">s00_axi_arprot[2:0]</obj_property>
+         <obj_property name="ObjectShortName">s00_axi_arprot[2:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/s00_axi_arvalid" type="logic">
+         <obj_property name="ElementShortName">s00_axi_arvalid</obj_property>
+         <obj_property name="ObjectShortName">s00_axi_arvalid</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/s00_axi_arready" type="logic">
+         <obj_property name="ElementShortName">s00_axi_arready</obj_property>
+         <obj_property name="ObjectShortName">s00_axi_arready</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/s00_axi_rdata" type="array">
+         <obj_property name="ElementShortName">s00_axi_rdata[31:0]</obj_property>
+         <obj_property name="ObjectShortName">s00_axi_rdata[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/s00_axi_rresp" type="array">
+         <obj_property name="ElementShortName">s00_axi_rresp[1:0]</obj_property>
+         <obj_property name="ObjectShortName">s00_axi_rresp[1:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/s00_axi_rvalid" type="logic">
+         <obj_property name="ElementShortName">s00_axi_rvalid</obj_property>
+         <obj_property name="ObjectShortName">s00_axi_rvalid</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/s00_axi_rready" type="logic">
+         <obj_property name="ElementShortName">s00_axi_rready</obj_property>
+         <obj_property name="ObjectShortName">s00_axi_rready</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="group61" type="group">
+      <obj_property name="label">CALC_AXI</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/bram_to_tot_calc_tb/s01_axi_awaddr" type="array">
+         <obj_property name="ElementShortName">s01_axi_awaddr[5:0]</obj_property>
+         <obj_property name="ObjectShortName">s01_axi_awaddr[5:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/s01_axi_awprot" type="array">
+         <obj_property name="ElementShortName">s01_axi_awprot[2:0]</obj_property>
+         <obj_property name="ObjectShortName">s01_axi_awprot[2:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/s01_axi_awvalid" type="logic">
+         <obj_property name="ElementShortName">s01_axi_awvalid</obj_property>
+         <obj_property name="ObjectShortName">s01_axi_awvalid</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/s01_axi_awready" type="logic">
+         <obj_property name="ElementShortName">s01_axi_awready</obj_property>
+         <obj_property name="ObjectShortName">s01_axi_awready</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/s01_axi_wdata" type="array">
+         <obj_property name="ElementShortName">s01_axi_wdata[31:0]</obj_property>
+         <obj_property name="ObjectShortName">s01_axi_wdata[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/s01_axi_wstrb" type="array">
+         <obj_property name="ElementShortName">s01_axi_wstrb[3:0]</obj_property>
+         <obj_property name="ObjectShortName">s01_axi_wstrb[3:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/s01_axi_wvalid" type="logic">
+         <obj_property name="ElementShortName">s01_axi_wvalid</obj_property>
+         <obj_property name="ObjectShortName">s01_axi_wvalid</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/s01_axi_wready" type="logic">
+         <obj_property name="ElementShortName">s01_axi_wready</obj_property>
+         <obj_property name="ObjectShortName">s01_axi_wready</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/s01_axi_bresp" type="array">
+         <obj_property name="ElementShortName">s01_axi_bresp[1:0]</obj_property>
+         <obj_property name="ObjectShortName">s01_axi_bresp[1:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/s01_axi_bvalid" type="logic">
+         <obj_property name="ElementShortName">s01_axi_bvalid</obj_property>
+         <obj_property name="ObjectShortName">s01_axi_bvalid</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/s01_axi_bready" type="logic">
+         <obj_property name="ElementShortName">s01_axi_bready</obj_property>
+         <obj_property name="ObjectShortName">s01_axi_bready</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/s01_axi_araddr" type="array">
+         <obj_property name="ElementShortName">s01_axi_araddr[5:0]</obj_property>
+         <obj_property name="ObjectShortName">s01_axi_araddr[5:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/s01_axi_arprot" type="array">
+         <obj_property name="ElementShortName">s01_axi_arprot[2:0]</obj_property>
+         <obj_property name="ObjectShortName">s01_axi_arprot[2:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/s01_axi_arvalid" type="logic">
+         <obj_property name="ElementShortName">s01_axi_arvalid</obj_property>
+         <obj_property name="ObjectShortName">s01_axi_arvalid</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/s01_axi_arready" type="logic">
+         <obj_property name="ElementShortName">s01_axi_arready</obj_property>
+         <obj_property name="ObjectShortName">s01_axi_arready</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/s01_axi_rdata" type="array">
+         <obj_property name="ElementShortName">s01_axi_rdata[31:0]</obj_property>
+         <obj_property name="ObjectShortName">s01_axi_rdata[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/s01_axi_rresp" type="array">
+         <obj_property name="ElementShortName">s01_axi_rresp[1:0]</obj_property>
+         <obj_property name="ObjectShortName">s01_axi_rresp[1:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/s01_axi_rvalid" type="logic">
+         <obj_property name="ElementShortName">s01_axi_rvalid</obj_property>
+         <obj_property name="ObjectShortName">s01_axi_rvalid</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/s01_axi_rready" type="logic">
+         <obj_property name="ElementShortName">s01_axi_rready</obj_property>
+         <obj_property name="ObjectShortName">s01_axi_rready</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="/bram_to_tot_calc_tb/tot" type="array">
+      <obj_property name="ElementShortName">tot[31:0]</obj_property>
+      <obj_property name="ObjectShortName">tot[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/bram_to_tot_calc_tb/t_lead" type="array">
+      <obj_property name="ElementShortName">t_lead[63:0]</obj_property>
+      <obj_property name="ObjectShortName">t_lead[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/bram_to_tot_calc_tb/u_tot_calculator_v1_5/tot_calculator_v1_5_S00_AXI_inst/slv_reg0" type="array">
+      <obj_property name="ElementShortName">slv_reg0[31:0]</obj_property>
+      <obj_property name="ObjectShortName">slv_reg0[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/bram_to_tot_calc_tb/u_tot_calculator_v1_5/tot_calculator_v1_5_S00_AXI_inst/slv_reg1" type="array">
+      <obj_property name="ElementShortName">slv_reg1[31:0]</obj_property>
+      <obj_property name="ObjectShortName">slv_reg1[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/bram_to_tot_calc_tb/u_tot_calculator_v1_5/tot_calculator_v1_5_S00_AXI_inst/slv_reg2" type="array">
+      <obj_property name="ElementShortName">slv_reg2[31:0]</obj_property>
+      <obj_property name="ObjectShortName">slv_reg2[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/bram_to_tot_calc_tb/u_tot_calculator_v1_5/tot_calculator_v1_5_S00_AXI_inst/slv_reg3" type="array">
+      <obj_property name="ElementShortName">slv_reg3[31:0]</obj_property>
+      <obj_property name="ObjectShortName">slv_reg3[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="group75" type="group">
+      <obj_property name="label">FIFO_LEAD_LOW</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/bram_to_tot_calc_tb/u_tot_calculator_v1_5/tot_calculator_v1_5_S00_AXI_inst/fifo_t_leading_low/din" type="array">
+         <obj_property name="ElementShortName">din[31:0]</obj_property>
+         <obj_property name="ObjectShortName">din[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/u_tot_calculator_v1_5/tot_calculator_v1_5_S00_AXI_inst/fifo_t_leading_low/wr_en" type="logic">
+         <obj_property name="ElementShortName">wr_en</obj_property>
+         <obj_property name="ObjectShortName">wr_en</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/u_tot_calculator_v1_5/tot_calculator_v1_5_S00_AXI_inst/fifo_t_leading_low/rd_en" type="logic">
+         <obj_property name="ElementShortName">rd_en</obj_property>
+         <obj_property name="ObjectShortName">rd_en</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/u_tot_calculator_v1_5/tot_calculator_v1_5_S00_AXI_inst/fifo_t_leading_low/dout" type="array">
+         <obj_property name="ElementShortName">dout[31:0]</obj_property>
+         <obj_property name="ObjectShortName">dout[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/u_tot_calculator_v1_5/tot_calculator_v1_5_S00_AXI_inst/fifo_t_leading_low/full" type="logic">
+         <obj_property name="ElementShortName">full</obj_property>
+         <obj_property name="ObjectShortName">full</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/u_tot_calculator_v1_5/tot_calculator_v1_5_S00_AXI_inst/fifo_t_leading_low/empty" type="logic">
+         <obj_property name="ElementShortName">empty</obj_property>
+         <obj_property name="ObjectShortName">empty</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="group82" type="group">
+      <obj_property name="label">FIFO_LEAD_HI</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/bram_to_tot_calc_tb/u_tot_calculator_v1_5/tot_calculator_v1_5_S00_AXI_inst/fifo_t_leading_hi/din" type="array">
+         <obj_property name="ElementShortName">din[31:0]</obj_property>
+         <obj_property name="ObjectShortName">din[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/u_tot_calculator_v1_5/tot_calculator_v1_5_S00_AXI_inst/fifo_t_leading_hi/wr_en" type="logic">
+         <obj_property name="ElementShortName">wr_en</obj_property>
+         <obj_property name="ObjectShortName">wr_en</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/u_tot_calculator_v1_5/tot_calculator_v1_5_S00_AXI_inst/fifo_t_leading_hi/rd_en" type="logic">
+         <obj_property name="ElementShortName">rd_en</obj_property>
+         <obj_property name="ObjectShortName">rd_en</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/u_tot_calculator_v1_5/tot_calculator_v1_5_S00_AXI_inst/fifo_t_leading_hi/dout" type="array">
+         <obj_property name="ElementShortName">dout[31:0]</obj_property>
+         <obj_property name="ObjectShortName">dout[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/u_tot_calculator_v1_5/tot_calculator_v1_5_S00_AXI_inst/fifo_t_leading_hi/full" type="logic">
+         <obj_property name="ElementShortName">full</obj_property>
+         <obj_property name="ObjectShortName">full</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/u_tot_calculator_v1_5/tot_calculator_v1_5_S00_AXI_inst/fifo_t_leading_hi/empty" type="logic">
+         <obj_property name="ElementShortName">empty</obj_property>
+         <obj_property name="ObjectShortName">empty</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="group89" type="group">
+      <obj_property name="label">FIFO_TOT</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/bram_to_tot_calc_tb/u_tot_calculator_v1_5/tot_calculator_v1_5_S00_AXI_inst/fifo_tot/din" type="array">
+         <obj_property name="ElementShortName">din[31:0]</obj_property>
+         <obj_property name="ObjectShortName">din[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/u_tot_calculator_v1_5/tot_calculator_v1_5_S00_AXI_inst/fifo_tot/wr_en" type="logic">
+         <obj_property name="ElementShortName">wr_en</obj_property>
+         <obj_property name="ObjectShortName">wr_en</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/u_tot_calculator_v1_5/tot_calculator_v1_5_S00_AXI_inst/fifo_tot/rd_en" type="logic">
+         <obj_property name="ElementShortName">rd_en</obj_property>
+         <obj_property name="ObjectShortName">rd_en</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/u_tot_calculator_v1_5/tot_calculator_v1_5_S00_AXI_inst/fifo_tot/dout" type="array">
+         <obj_property name="ElementShortName">dout[31:0]</obj_property>
+         <obj_property name="ObjectShortName">dout[31:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/u_tot_calculator_v1_5/tot_calculator_v1_5_S00_AXI_inst/fifo_tot/full" type="logic">
+         <obj_property name="ElementShortName">full</obj_property>
+         <obj_property name="ObjectShortName">full</obj_property>
+      </wvobject>
+      <wvobject fp_name="/bram_to_tot_calc_tb/u_tot_calculator_v1_5/tot_calculator_v1_5_S00_AXI_inst/fifo_tot/empty" type="logic">
+         <obj_property name="ElementShortName">empty</obj_property>
+         <obj_property name="ObjectShortName">empty</obj_property>
+      </wvobject>
+   </wvobject>
+</wave_config>

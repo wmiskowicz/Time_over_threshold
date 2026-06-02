@@ -14,7 +14,7 @@ module tot_calculator_v1_5_S00_AXI #
 )
 (
 	input wire [SAMPLE_NUM_PER_CYCLE*12-1:0] sample,
-	wire sample_valid,
+	input wire sample_valid,
 	output wire sample_ready,
 	// Do not modify the ports beyond this line
 
@@ -371,6 +371,7 @@ wire [WIDTH-1:0] tot;
 wire [WIDTH-1:0] t_leading_edge;
 wire data_valid;
 wire [WIDTH-1:0] thr_in;
+reg [287:0] sample_q;
 
 assign thr_in = slv_reg0[WIDTH-1:0];
 
@@ -385,13 +386,22 @@ u_tot_core_top (
 
 
 	.thr           (thr_in),
-	// .sample        (sample_valid ? sample : WIDTH'(0)),
-	.sample        (sample),
+	.sample        (sample_q),
+	// .sample        (sample),
 
 	.data_valid    (data_valid),
 	.t_leading_edge(t_leading_edge),
 	.tot           (tot)
 );
+
+always @(posedge S_AXI_ACLK) begin
+	if (~S_AXI_ARESETN) 
+		sample_q <= 288'd0;
+	else if (sample_valid)
+		sample_q <= sample;
+end
+
+
 
 
 // ----- FIFO -----
